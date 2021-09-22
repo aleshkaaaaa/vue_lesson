@@ -19,28 +19,30 @@
     </div>
     <div>
       <br>
-      <input type="checkbox" id="checkbox" v-model="checked"> Отобразить экранную клавиатуру
+      <input @click='toShow()' type="checkbox" id="checkbox" v-model="checked"> Отобразить экранную клавиатуру
     </div>
-    <div class="keybotdNumbers">
+    <div class="inputKeyboard hidden-div">
+      <div class="keybotdNumbers">
+        <br>
+        <button @click="typeLetter(0)">0</button>
+        <button @click="typeLetter(1)">1</button>
+        <button @click="typeLetter(2)">2</button>
+        <button @click="typeLetter(3)">3</button>
+        <button @click="typeLetter(4)">4</button>
+        <button @click="typeLetter(5)">5</button>
+        <button @click="typeLetter(6)">6</button>
+        <button @click="typeLetter(7)">7</button>
+        <button @click="typeLetter(8)">8</button>
+        <button @click="typeLetter(9)">9</button>
+        <button @click="deleteLastSym()">delete</button>
+      </div>
+      <div>
       <br>
-      <button @click="typeLetter(0)">0</button>
-      <button @click="typeLetter(1)">1</button>
-      <button @click="typeLetter(2)">2</button>
-      <button @click="typeLetter(3)">3</button>
-      <button @click="typeLetter(4)">4</button>
-      <button @click="typeLetter(5)">5</button>
-      <button @click="typeLetter(6)">6</button>
-      <button @click="typeLetter(7)">7</button>
-      <button @click="typeLetter(8)">8</button>
-      <button @click="typeLetter(9)">9</button>
-      <button @click="deleteLastSym()">delete</button>
-    </div>
-    <div>
-      <br>
-      <input type="radio" id="one" value="Операнд 1" v-model="picked">Операнд 1
-      <input type="radio" id="two" value="Операнд 2" v-model="picked">Операнд 2
-      <br>
-      <span>Выбрано: {{ picked }}</span>
+        <input type="radio" id="one" value="Операнд 1" v-model="picked">Операнд 1
+        <input type="radio" id="two" value="Операнд 2" v-model="picked">Операнд 2
+        <br>
+        <span>Выбрано: {{ picked }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +61,9 @@ export default {
   },
   methods: {
     toShow () {
+      if (document.getElementById('checkbox').checked) {
+        document.querySelector('.inputKeyboard').classList.toggle('hidden-div')
+      }
     },
     typeLetter (element) {
       if (document.getElementById('one').checked) {
@@ -136,3 +141,9 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+  .hidden-div {
+  display: none;
+}
+</style>
