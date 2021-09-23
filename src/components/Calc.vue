@@ -1,8 +1,8 @@
 <template>
   <div class="calc">
     <div class="main">
-      <input v-model.number ="op1" id="op1" type="number" />
-      <input v-model.number ="op2" id="op2" type="number" />
+      <input v-model.number ="op1" id="op1" type="number" v-focus />
+      <input v-model.number ="op2" id="op2" type="number" v-focus />
       = {{ result }}
     </div>
     <div class="error">
@@ -50,41 +50,56 @@
 <script>
 export default {
   name: 'Calculator',
+  watch: {
+    op1: function (val) {
+      console.log('op1', val)
+    },
+    op2: function (val) {
+      console.log('op2', val)
+    },
+    picked: function (val) {
+      console.log('picked', val)
+    }
+  },
+  updated () {
+  },
   data () {
     return {
       op1: 0,
       op2: 0,
       error: '',
       result: 0,
-      picked: ''
+      picked: 'Операнд 1',
+      checked: false
+    }
+  },
+  directives: {
+    focus: {
+      inserted: function (el) {
+        el.focus()
+      }
     }
   },
   methods: {
     toShow () {
-      if (document.getElementById('checkbox').checked) {
-        document.querySelector('.inputKeyboard').classList.toggle('hidden-div')
+      if (this.checked === true) {
+        document.querySelector('.inputKeyboard').classList.add('hidden-div')
+      } else if (this.checked === false) {
+        document.querySelector('.inputKeyboard').classList.remove('hidden-div')
       }
     },
     typeLetter (element) {
-      if (document.getElementById('one').checked) {
-        let text = document.getElementById('op1').value
-        text += element
-        document.getElementById('op1').value = text
-      } else if (document.getElementById('two').checked) {
-        let text = document.getElementById('op2').value
-        text += element
-        document.getElementById('op2').value = text
+      if (this.picked === 'Операнд 1') {
+        this.op1 += `${element}`
+      } else if (this.picked === 'Операнд 2') {
+        this.op2 += `${element}`
       }
     },
     deleteLastSym () {
-      if (document.getElementById('one').checked) {
-        let text = document.getElementById('op1').value
-        text = text.slice(0, -1)
-        document.getElementById('op1').value = text
-      } else if (document.getElementById('two').checked) {
-        let text = document.getElementById('op2').value
-        text = text.slice(0, -1)
-        document.getElementById('op2').value = text
+      if (this.picked === 'Операнд 1') {
+        this.op1 = this.op1.slice(0, -1)
+      } else if (this.picked === 'Операнд 2') {
+        this.op2 = this.op2.slice(0, -1)
       }
     },
     calculate (operation = '+') {
